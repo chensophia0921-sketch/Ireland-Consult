@@ -1,0 +1,32 @@
+
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>爱尔兰生活经验交流</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="page">
+<section class="hero">
+  <div class="flag">🇮🇪</div>
+  <h1>爱尔兰生活</h1>
+  <h2>经验分享 & 一对一交流</h2>
+  <div class="pills"><span class="pill">留学</span><span class="pill">工作</span><span class="pill">税务流程</span><span class="pill">PPSN</span><span class="pill">公司注册</span><span class="pill">VAT</span><span class="pill">本地生活</span></div>
+  <div class="feature-strip"><span>☘ 经验分享</span><span>▣ 信息整理</span><span>✦ 真实靠谱</span><span>♡ 助你少走弯路</span></div>
+</section>
+<section class="section">
+  <div class="price-head"><h1>☘ 一对一经验交流 ☘</h1><div><span class="price">30元<small> / 次</small></span><span class="time-tag">约30分钟</span></div></div>
+  <div class="info-card">
+    <div class="info-row"><div class="icon">✦</div><div><b>任选 1 个主题</b><div class="sub">每次咨询可选择一个你最关心的问题</div></div></div>
+    <div class="info-row"><div class="icon">⏱</div><div><b>最多 30 分钟交流</b><div class="sub">自管理员开始回复起计算，问题解决后即可结束</div></div></div>
+    <div class="info-row"><div class="icon">▧</div><div><b>支持文字、图片、文件</b><div class="sub">可发送截图及相关资料说明情况</div></div></div>
+    <div class="info-row"><div class="icon">⌂</div><div><b>基于个人经验分享</b><div class="sub">仅供参考，不构成专业意见</div></div></div>
+  </div>
+  <form method="post" action="/start">
+    <div class="field"><label>你的称呼</label><input name="name" required placeholder="例如：Amy"></div>
+    <h3>选择咨询主题（请选择 1 个）</h3>
+    <div class="topic-grid">
+    {% set icons=['🎓','💼','👤','📄','🏢','✈️','🏠','💬'] %}
+    {% for t in topics %}
+      <label><input class="topic-radio" type="radio" name="topic" value="{{t}}" required><span class="topic-card"><span class="topic-icon">{{icons[loop.index0]}}</span>{{t}}</span></label>
+    {% endfor %}
+    </div>
+    <button class="btn">下一步</button>
+  </form>
+</section>
+<div class="footer-note">希望成为你在爱尔兰的好帮手 ♡<br>基于个人经验及公开信息分享，仅供参考。</div>
+</main></body></html>

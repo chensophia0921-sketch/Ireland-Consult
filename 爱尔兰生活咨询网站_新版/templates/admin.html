@@ -1,0 +1,8 @@
+
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>咨询后台</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="admin-page"><div style="display:flex;justify-content:space-between;align-items:center"><h1>咨询后台</h1><a href="/logout">退出</a></div>
+<div class="admin-card"><button class="btn outline" onclick="enableNotify()">开启电脑桌面通知</button></div>
+<div class="admin-card" style="overflow:auto"><table><thead><tr><th>编号</th><th>客户</th><th>主题</th><th>状态</th><th>创建时间</th><th></th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{r.id}}</td><td>{{r.name}}</td><td>{{r.topic}}</td><td class="status">{{r.status}}</td><td>{{r.created_at}}</td><td><a style="color:#0f7a3f;font-weight:700" href="/admin/chat/{{r.id}}">打开</a></td></tr>{% endfor %}
+</tbody></table></div></div>
+<script>let since=new Date().toISOString();async function enableNotify(){if('Notification'in window)await Notification.requestPermission()}async function check(){const r=await fetch('/admin/api/new?after='+encodeURIComponent(since));const j=await r.json();if(j.length){j.forEach(x=>{if(Notification.permission==='granted')new Notification('新咨询消息',{body:x.name+'：'+x.body})});since=j[j.length-1].created_at}}setInterval(check,5000)</script></body></html>

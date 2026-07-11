@@ -1,0 +1,16 @@
+
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>支付咨询费用</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="page">
+<div class="topbar"><a class="back" href="/">‹</a><div class="top-title">支付咨询费用</div><div class="ghost"></div></div>
+<section class="section pay-wrap">
+  <div class="amount">30元 / 次 <span class="time-tag">约30分钟</span></div>
+  <p>请使用微信扫码支付 <b>¥30.00</b><br><span class="sub">支付后请上传付款截图</span></p>
+  <div class="pay-card"><div style="color:white;font-weight:700;margin-bottom:8px">推荐使用微信支付</div><img src="/static/wechat-pay.png" alt="微信收款码"></div>
+  <div class="notice">咨询编号：<b>{{c.id}}</b><br>付款备注建议填写此编号，便于核对。</div>
+  <form method="post" enctype="multipart/form-data">
+    <div class="upload-box"><div style="font-size:34px">☁</div><b>点击选择付款截图</b><div class="sub">支持 jpg、png、jpeg、webp</div><input type="file" name="payment_image" accept="image/*" required></div>
+    <button class="btn">我已支付，上传付款截图</button>
+  </form>
+</section>
+<div class="footer-note">提交后请耐心等待，我们会尽快核对。</div>
+</main></body></html>
