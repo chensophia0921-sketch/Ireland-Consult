@@ -1,0 +1,18 @@
+
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>咨询中</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="page">
+<div class="topbar"><a class="back" href="/">‹</a><div class="top-title">咨询中</div><div id="timer" class="timer">30:00</div></div>
+<div class="chat-head">主题：{{c.topic}}<div class="chat-meta">编号 {{c.id}}｜状态：<span id="status">{{c.status}}</span></div></div>
+<div id="chat" class="chat-box">{% for m in msgs %}<div class="msg {{m.sender}}">{{m.body}}</div>{% endfor %}</div>
+<div class="chat-input"><textarea id="body" placeholder="输入消息…"></textarea><button class="send" onclick="sendMsg()">➤</button></div>
+<div class="footer-note">咨询时长最多30分钟，问题解答完成后本次交流结束。</div>
+</main>
+<script>
+let last={{ msgs[-1].id if msgs else 0 }}, started=null;
+const chat=document.getElementById('chat');
+function add(m){const d=document.createElement('div');d.className='msg '+m.sender;d.textContent=m.body;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;last=Math.max(last,m.id||last)}
+async function sendMsg(){const b=document.getElementById('body');if(!b.value.trim())return;await fetch('/api/send/{{c.id}}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:'customer',body:b.value})});b.value='';poll()}
+function tick(){if(!started)return;let end=new Date(started).getTime()+30*60*1000, left=Math.max(0,end-Date.now());let m=Math.floor(left/60000),s=Math.floor((left%60000)/1000);document.getElementById('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+async function poll(){const r=await fetch('/api/messages/{{c.id}}?after='+last);const j=await r.json();j.messages.forEach(add);document.getElementById('status').textContent=j.status;if(j.started_at){started=j.started_at;tick()}}
+setInterval(poll,2200);setInterval(tick,1000);chat.scrollTop=chat.scrollHeight;poll();
+</script></body></html>

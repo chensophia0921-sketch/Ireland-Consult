@@ -1,0 +1,17 @@
+
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>后台聊天</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><main class="page"><div class="topbar"><a class="back" href="/admin">‹</a><div class="top-title">{{c.name}}</div><button class="btn red" onclick="endChat()">结束咨询</button></div>
+<div class="chat-head">主题：{{c.topic}}<div class="chat-meta">编号 {{c.id}}｜状态：<span id="status">{{c.status}}</span></div>
+{% if c.payment_image %}<div style="margin-top:8px"><a style="color:#0f7a3f;font-weight:700" target="_blank" href="/static/uploads/{{c.payment_image}}">查看付款截图</a></div>{% endif %}
+<button class="btn" style="margin-top:10px" onclick="startChat()">确认付款并开始30分钟</button></div>
+<div id="chat" class="chat-box">{% for m in msgs %}<div class="msg {{m.sender}}">{{m.body}}</div>{% endfor %}</div>
+<div class="chat-input"><textarea id="body" placeholder="回复客户…"></textarea><button class="send" onclick="sendMsg()">➤</button></div></main>
+<script>
+let last={{ msgs[-1].id if msgs else 0 }};const chat=document.getElementById('chat');
+function add(m){const d=document.createElement('div');d.className='msg '+m.sender;d.textContent=m.body;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;last=Math.max(last,m.id||last)}
+async function sendMsg(){const b=document.getElementById('body');if(!b.value.trim())return;await fetch('/api/send/{{c.id}}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sender:'admin',body:b.value})});b.value='';poll()}
+async function poll(){const r=await fetch('/api/messages/{{c.id}}?after='+last);const j=await r.json();j.messages.forEach(add);document.getElementById('status').textContent=j.status}
+async function startChat(){await fetch('/admin/start/{{c.id}}',{method:'POST'});poll()}
+async function endChat(){await fetch('/admin/end/{{c.id}}',{method:'POST'});poll()}
+setInterval(poll,2000);chat.scrollTop=chat.scrollHeight;
+</script></body></html>
